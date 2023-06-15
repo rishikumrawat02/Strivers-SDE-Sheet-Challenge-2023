@@ -1,0 +1,75 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+import javax.swing.text.Segment;
+
+public class Solution 
+{
+    static int tree[];
+    static class Pair implements Comparable<Pair>{
+        int idx, val;
+        Pair(int idx, int val){
+            this.idx=idx; this.val=val;
+        }
+        public int compareTo(Pair p){
+            return Long.compare(this.val,p.val);
+        }
+    }
+    static int helper(Pair arr[], long val){
+        int low=0; int high=arr.length;
+        while(low<high){
+            int mid=low+(high-low)/2;
+            if(arr[mid].val>val){
+                high=mid;
+            }else low=mid+1;
+        }
+        return high;
+    }
+
+    static void update(int left, int right, int pos, int idx, int val){
+            if(left==right){
+                tree[idx]=val;
+                return;
+            }
+            int mid=left+(right-left)/2;        
+            if(pos<=mid) update(left,mid,pos,2*idx+1,val);
+            else update(mid+1,right,pos,2*idx+2,val);
+            tree[idx]=tree[2*idx+1]+tree[2*idx+2];
+            return;
+        }
+
+    static int getAns(int left, int right, int qS, int qE, int idx){
+            if(left>qE || right<qS) return 0;
+            if(left>=qS && right<=qE) return tree[idx];
+            int mid=left+(right-left)/2;
+            int x = getAns(left,mid,qS,qE,2*idx+1);
+            int y = getAns(mid+1,right,qS,qE,2*idx+2);
+            return x+y;
+        }
+    
+    public static int reversePairs(ArrayList<Integer> arr1) 
+    {
+        // Write your code here.
+       int n=arr1.size(); tree=new int[4*n];
+        Pair arr[] = new Pair[n];        
+        for(int i=0; i<n; i++) arr[i]=new Pair(i,arr1.get(i));
+        Arrays.sort(arr);
+        int index[] = new int[n];
+        for(int i=0; i<n; i++){
+            index[arr[i].idx]=i;
+        }
+
+        int res=0;
+        for(int i=0; i<n; i++){
+            int idx=helper(arr,2l*arr1.get(i));
+            if(idx!=n){
+                int curVal=getAns(0,n-1,idx,n-1,0);
+                res+=curVal;
+            } 
+            update(0,n-1,index[i],0,1);
+        }
+        return res;
+    }
+ 
+}
