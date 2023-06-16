@@ -1,0 +1,53 @@
+import java.util.ArrayList;
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> solveNQueens(int n) {
+        // Write your code here.
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        Integer matrix[][] = new Integer[n][n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                matrix[i][j]=0;
+            }
+        }
+        helper(res,n,0,matrix);
+        return res;
+    }
+
+    static void helper(ArrayList<ArrayList<Integer>> res, int n, int i,Integer matrix[][]){
+        if(i==n){
+            ArrayList<Integer> curList = new ArrayList<>();
+            for(int i1=0; i1<n; i1++){
+                for(int j=0; j<n; j++){
+                    curList.add(matrix[i1][j]);
+                }
+            }
+            res.add(new ArrayList<>(curList));
+            return;
+        }
+        for(int j=0; j<n; j++){
+            if(isPossible(n,i,j,matrix)){
+                matrix[i][j]=1;
+                helper(res,n,i+1,matrix);
+                matrix[i][j]=0;
+            }
+        }
+        return;
+    }
+
+    static boolean isPossible(int n, int i, int j, Integer matrix[][]){
+        for(int k=i-1; k>=0; k--){
+            if(matrix[k][j]==1) return false;
+        }
+
+        int row=i-1; int col=j-1;
+        while(row>=0 && col>=0){
+            if(matrix[row--][col--]==1) return false;
+        }
+        row=i-1; col=j+1;
+        while(row>=0 && col<n){
+            if(matrix[row--][col++]==1) return false;
+        }
+        return true;
+    }
+}
