@@ -1,0 +1,60 @@
+public class Trie {
+
+
+    //Initialize your data structure here
+    static class Node{
+        boolean isEnd=false;
+        Node arr[]=new Node[26];
+    }
+
+    static Node root=new Node();
+
+    Trie() {
+        //Write your code here
+    }
+
+
+    //Inserts a word into the trie
+
+    public static void insert(String word) {
+        //Write your code here
+        Node cur=root;
+        for(int i=0; i<word.length(); i++){
+            if(cur.arr[word.charAt(i)-'a']!=null){
+                cur=cur.arr[word.charAt(i)-'a'];
+            }else{
+                cur.arr[word.charAt(i)-'a']=new Node();
+                cur=cur.arr[word.charAt(i)-'a'];
+            }
+        }
+        cur.isEnd=true;
+        return;      
+    }
+
+
+    //Returns if the word is in the trie
+
+    public static boolean search(String word) {
+        //Write your code here
+        Node cur=root;
+        for(int i=0; i<word.length(); i++){
+            if(cur.arr[word.charAt(i)-'a']==null) return false;
+            cur=cur.arr[word.charAt(i)-'a'];
+        }
+        if(cur.isEnd) return true;
+        return false;  
+    }
+
+    
+    //Returns if there is any word in the trie that starts with the given prefix
+
+    public static boolean startsWith(String prefix) {
+        //Write your code here
+        Node cur=root;
+        for(int i=0; i<prefix.length(); i++){
+            if(cur.arr[prefix.charAt(i)-'a']==null) return false;
+            cur=cur.arr[prefix.charAt(i)-'a'];
+        }
+        return true;  
+    }
+}
