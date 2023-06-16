@@ -1,0 +1,34 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+
+	public static ArrayList<String> wordBreak(String s, ArrayList<String> wordDict) {
+		// Write your code here.
+		int n=s.length();
+        ArrayList<String> res = new ArrayList<>();
+        helper(s,0,wordDict,res,new StringBuilder());
+        return res;
+	}
+
+	static void helper(String s, int idx, List<String> wordDict, ArrayList<String> res, StringBuilder curStr){
+        if(idx==s.length()){
+            res.add(new StringBuilder(curStr).toString());
+            return;
+        }
+        StringBuilder curWord = new StringBuilder();
+        for(int i=idx; i<s.length(); i++){
+            char c=s.charAt(i);
+            curWord.append(c);
+            if(wordDict.contains(curWord.toString())){
+                if(idx!=0) curStr.append(" ");
+                curStr.append(curWord);
+                helper(s,i+1,wordDict,res,curStr);
+                curStr.delete(curStr.length()-curWord.length(),curStr.length());
+                if(idx!=0) curStr.deleteCharAt(curStr.length()-1);
+            }
+        }
+        return;
+    }
+}
