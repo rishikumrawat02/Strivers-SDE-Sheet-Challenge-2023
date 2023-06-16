@@ -1,0 +1,23 @@
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+    static long power(int power, int mod, int a){
+        long res=1l;
+        long val=a*1l;
+        while(power!=0){
+            if((power&1)!=0){
+                res*=val;
+                res%=mod;
+            }
+            power>>=1;
+            val*=val; val%=mod;
+        }
+        return res;
+    }
+    public static int modularExponentiation(int x, int n, int m) {
+        // Write your code here.       
+        long res = power(n,m,x);
+        return (int)res%m;
+    }
+}
