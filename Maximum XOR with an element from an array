@@ -1,0 +1,74 @@
+import java.util.ArrayList;
+import java.util.*;
+import java.math.*;
+
+public class Solution {
+    static class Pair implements Comparable<Pair>{
+        int idx; int xi; int ai;
+        Pair(int idx, int xi, int ai){
+            this.idx=idx; this.xi=xi; this.ai=ai;
+        }
+        public int compareTo(Pair p){
+            return Integer.compare(this.ai,p.ai);
+        }
+    }
+
+    static class Trie{
+        Trie arr[] = new Trie[2];
+    }
+
+    
+    static void insert(int num, Trie root){
+        Trie cur = root;
+        for(int i=31; i>=0; i--){
+            int curBit=(num>>i)&1;
+            if(cur.arr[curBit]==null){
+                cur.arr[curBit]=new Trie();
+            }
+            cur=cur.arr[curBit];
+        }
+    }
+
+    static int maxXor(int num, Trie root){
+        Trie cur = root;
+        int res=0; boolean found=true;
+        for(int i=31; i>=0; i--){
+            int orgBit=(num>>i)&1;
+            if(cur.arr[1-orgBit]!=null){
+                res|=(1<<i);
+                cur=cur.arr[1-orgBit];
+            }else if(cur.arr[orgBit]!=null){
+                cur=cur.arr[orgBit];
+            }else{
+                found=false;
+                break;
+            }
+        }
+        if(!found) return -1;
+        return res;
+    }
+
+    public static ArrayList<Integer> maxXorQueries(ArrayList<Integer> arr1, ArrayList<ArrayList<Integer>> queries) {
+        // Write your code here.
+        Trie root = new Trie();
+        Collections.sort(arr1);
+        int q=queries.size();
+        Pair arr[] = new Pair[q];
+        for(int i=0; i<q; i++){
+            arr[i]=new Pair(i,queries.get(i).get(0),queries.get(i).get(1));
+        }
+        Arrays.sort(arr);       
+        Integer ans[] = new Integer[q];
+        
+        int idx=0;
+        for(int i=0; i<q; i++){
+            int xi=arr[i].xi; int ai=arr[i].ai;
+            while(idx<arr1.size() && arr1.get(idx)<=ai){
+                insert(arr1.get(idx++),root);
+            }
+            ans[arr[i].idx]=maxXor(xi,root);
+        }
+        ArrayList<Integer> res = new ArrayList<>(Arrays.asList(ans));
+        return res;
+    }    
+}
