@@ -1,0 +1,44 @@
+import java.util.*;
+public class Solution {
+
+    public static List<List<Integer>> stronglyConnectedComponents(int n, int[][] edges) {
+        // Write your code here
+        List<List<Integer>> graph = new ArrayList<>();
+        List<List<Integer>> revgr = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            graph.add(new ArrayList<>());
+            revgr.add(new ArrayList<>());
+        }
+        for(int edge[]: edges){
+            int u=edge[0]; int v=edge[1];
+            graph.get(u).add(v);
+            revgr.get(v).add(u);
+        }
+        List<Integer> topo = new ArrayList<>();
+        boolean visit[] = new boolean[n];
+        for(int i=0; i<n; i++){
+            if(!visit[i]) DFS(i,visit,graph,topo);
+        }
+        Collections.reverse(topo);
+        Arrays.fill(visit,false);
+
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            if(!visit[topo.get(i)]){
+                List<Integer> comp = new ArrayList<>();
+                DFS(topo.get(i),visit,revgr,comp);
+                res.add(comp);
+            }
+        }
+        return res;
+    }
+
+    static void DFS(int src, boolean visit[], List<List<Integer>> adj, List<Integer> topo){
+        visit[src]=true;
+        for(int child: adj.get(src)){
+            if(visit[child]) continue;
+            DFS(child,visit,adj,topo);
+        }
+        topo.add(src);
+    }
+}
