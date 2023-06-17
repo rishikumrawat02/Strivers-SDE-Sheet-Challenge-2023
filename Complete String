@@ -1,0 +1,44 @@
+import java.util.* ;
+import java.io.*; 
+
+class Solution {
+  static class Trie{
+    Trie arr[] = new Trie[26];
+    boolean isEnd=false;
+  }
+
+  static boolean insert(Trie root, String str){
+    Trie cur = root; boolean res=true;
+    for(int i=0; i<str.length(); i++){
+      char c=str.charAt(i);
+      if(cur.arr[c-'a']==null){
+        cur.arr[c-'a']=new Trie();
+      }
+      cur=cur.arr[c-'a'];
+      if(cur.isEnd==false && i!=str.length()-1) res=false;
+    }
+    cur.isEnd=true;
+    return res;
+  }
+
+  public static String completeString(int n, String[] a) {
+    // Write your code here.
+    Arrays.sort(a);
+    int ansLen=0; String resStr="";
+    Trie root = new Trie();
+    for(String word: a){
+      boolean res=insert(root,word);
+      if(res){
+        if(word.length()>ansLen){
+          ansLen=word.length(); resStr=word;
+        }else if(word.length()==ansLen && word.compareTo(resStr)<0){
+          resStr=word;
+        }
+      }
+    }
+    if(ansLen==0){
+      return "None";
+    }
+    return resStr;
+  }
+}
