@@ -1,0 +1,29 @@
+import java.util.*;
+
+public class Solution {
+  public static int largestRectangle(ArrayList < Integer > heights) {
+    // Write your code here.
+    int n=heights.size();
+    int prevSmall[] = new int[n];
+    int nextSmall[] = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for(int i=0; i<n; i++){
+      while(!st.isEmpty() && heights.get(st.peek())>=heights.get(i)) st.pop();
+      prevSmall[i]=(st.isEmpty())?-1:st.peek();
+      st.push(i);
+    }
+    st.clear();
+    for(int i=n-1; i>=0; i--){
+      while(!st.isEmpty() && heights.get(st.peek())>=heights.get(i)) st.pop();
+      nextSmall[i]=(st.isEmpty())?n:st.peek();
+      st.push(i);
+    }
+
+    int res=0;
+    for(int i=0; i<n; i++){
+      int val=heights.get(i)*(nextSmall[i]-1-prevSmall[i]);
+      res=Math.max(res,val);
+    }
+    return res;
+  }
+}
