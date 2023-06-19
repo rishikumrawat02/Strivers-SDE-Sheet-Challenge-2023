@@ -1,0 +1,67 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the Binary Tree node structure:
+    
+   class TreeNode {
+	    int data;
+	    TreeNode left;
+	    TreeNode right;
+
+	    TreeNode(int data) {
+		    this.data = data;
+		    this.left = null;
+		    this.right = null;
+	    }
+
+    }
+
+************************************************************/
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static ArrayList<Integer> traverseBoundary(TreeNode root){
+		// Write your code here.
+		ArrayList<Integer> res = new ArrayList<>();
+	    if(root==null) return res;
+	    res.add(root.data);
+	    if(root.left!=null) helper(res,root.left);
+	    helper1(res,root.left);
+	    helper1(res,root.right);
+	    ArrayList<Integer> res1 = new ArrayList<>();
+	    if(root.right!=null) helper2(res1,root.right);
+	    Collections.reverse(res1);
+	    res.addAll(res1);
+	    return res;
+	}
+
+	static void helper(ArrayList<Integer> res, TreeNode root){
+	    if(root.left==null && root.right==null) return;
+	   // System.out.println("Yes");
+	    res.add(root.data);
+	    if(root.left!=null) helper(res,root.left);
+	    else helper(res,root.right);
+	    return;
+	}
+	
+	static void helper1(ArrayList<Integer> res, TreeNode root){
+	    if(root==null) return;
+	    if(root.left==null && root.right==null){
+	        res.add(root.data);
+	        return;
+	    }
+	    helper1(res,root.left);
+	    helper1(res,root.right);
+	    return;
+	}
+	
+	static void helper2(ArrayList<Integer> res, TreeNode root){
+	    if(root.left==null && root.right==null) return;
+	    res.add(root.data);
+	    if(root.right!=null) helper2(res,root.right);
+	    else helper2(res,root.left);
+	    return;
+	}
+}
