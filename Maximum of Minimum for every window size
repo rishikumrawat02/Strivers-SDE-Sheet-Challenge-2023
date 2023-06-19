@@ -1,0 +1,32 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int[] maxMinWindow(int[] arr, int n) {
+        // Write your code here
+        Stack<Integer> st = new Stack<>();
+        int leftSmall[] = new int[n];
+        for(int i=0; i<n; i++){
+            while(!st.isEmpty() && arr[st.peek()]>=arr[i]) st.pop();
+            leftSmall[i]=(st.isEmpty())?-1:st.peek();
+            st.push(i);
+        }
+        st.clear(); 
+        int rightSmall[] = new int[n];
+        for(int i=n-1; i>=0; i--){
+            while(!st.isEmpty() && arr[st.peek()]>=arr[i]) st.pop();
+            rightSmall[i]=(st.isEmpty())?n:st.peek();
+            st.push(i);
+        }
+        // for(int i=0; i<n; i++) System.out.println(leftSmall[i]+" "+rightSmall[i]);
+        int res[] = new int[n];
+        Arrays.fill(res,Integer.MIN_VALUE);
+        for(int i=0; i<n; i++){
+            res[rightSmall[i]-leftSmall[i]-2]=Math.max(res[rightSmall[i]-leftSmall[i]-2],arr[i]);
+        }
+        for(int i=n-2; i>=0; i--){
+            res[i]=Math.max(res[i],res[i+1]);
+        }
+        return res;                      
+    }
+}
+
