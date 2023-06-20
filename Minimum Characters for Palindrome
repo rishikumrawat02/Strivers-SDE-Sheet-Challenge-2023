@@ -1,0 +1,32 @@
+
+public class Solution {
+
+    public static int minCharsforPalindrome(String str) {
+        //Write your code here
+        StringBuilder str1 = new StringBuilder(str);
+        str1.reverse();
+        String newStr = str+"$"+str1.toString();
+        
+        int n=newStr.length();
+        int lpsArr[] = new int[n];
+        buildLps(lpsArr, newStr);
+        return str.length()-lpsArr[n-1];
+    }
+
+    static void buildLps(int lpsArr[], String str){
+        char arr[] = str.toCharArray();
+        int i=1; int len=0; int n=arr.length;
+        while(i<n){
+            if(arr[i]==arr[len]){
+                lpsArr[i]=++len; i++;
+            }else{
+                if(len==0){
+                    lpsArr[i]=0; i++;
+                }else{
+                    len=lpsArr[len-1];
+                }
+            }
+        }
+    }
+
+}
