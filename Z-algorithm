@@ -1,0 +1,40 @@
+public class Solution {
+
+	public static int zAlgorithm(String s, String p, int n, int m) {
+		// Write your code here
+		int zArr[] = new int[n+m+1];
+		String text=p+"$"+s;
+		calculate(text,zArr);
+		int res=0;
+		for(int i=0; i<zArr.length; i++){
+			if(zArr[i]==m) res++;
+		}
+		return res;
+	}
+
+	static void calculate(String str, int zArr[]){
+		int left=0; int right=0; int n=str.length();
+		char arr[] = str.toCharArray();
+		for(int k=1; k<n; k++){
+			if(k>right){
+				left=right=k;
+				while(right<n && arr[right]==arr[right-left]){
+					right++;
+				}
+				zArr[k]=right-left;
+				right--;
+			}else{
+				int k1=k-left;
+				if(zArr[k1]<right-k+1){
+					zArr[k]=zArr[k1];
+				}else{
+					left=k;
+					while(right<n && arr[right]==arr[right-left]) right++;
+					zArr[k]=right-left;
+					right--;
+				}
+			}
+		}
+	}
+
+}
