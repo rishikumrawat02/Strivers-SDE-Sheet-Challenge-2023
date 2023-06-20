@@ -1,11 +1,38 @@
-class Solution {
-    public ListNode reverseKGroup(ListNode head, int k) {
-        List<ListNode> list = new ArrayList<>();
-        ListNode cur=head; ListNode prevTail = new ListNode(); ListNode orgHead = prevTail;
+import java.io.*;
+import java.util.* ;
+
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+
+public class Solution {
+	public static Node getListAfterReverseOperation(Node head, int n, int b[]) {
+		// Write your code here.
+        List<Node> list = new ArrayList<>(); int idx=0; while(idx<n && b[idx]==0) idx++;
+        Node cur=head; Node prevTail = new Node(-1); Node orgHead = prevTail;
         while(cur!=null){
+            if(idx<b.length && b[idx]==0){
+                idx++; continue;
+            }
             list.add(cur);
-            if(list.size()==k){
-                ListNode arr[] = reverse(list);
+            // System.out.println(idx+" "+list.size()+" "+b[idx]);
+            if(idx<b.length && list.size()==b[idx]){
+                idx++;
+                Node arr[] = reverse(list);
                 prevTail.next=arr[0];
                 prevTail=arr[1];
                 list.clear();
@@ -13,21 +40,25 @@ class Solution {
             }else cur=cur.next;
         }
 
-        if(list.size()!=0){
+        if(idx<b.length && list.size()!=0){
+            Node arr[] = reverse(list);
+            prevTail.next=arr[0];
+            arr[1].next=null;
+        }else if(list.size()!=0){
             prevTail.next=list.get(0);
         }
         return orgHead.next;
-    }
+	}
 
-    ListNode[] reverse(List<ListNode> list){
-        ListNode prev=null; 
-        ListNode cur = list.get(0);  ListNode temp=null;
+    static Node[] reverse(List<Node> list){
+        Node prev=null; 
+        Node cur = list.get(0);  Node temp=null;
         for(int i=0; i<list.size(); i++){
             temp=cur.next;
             cur.next=prev;
             prev=cur;
             cur=temp;
         }
-        return new ListNode[]{prev,list.get(0),cur};
+        return new Node[]{prev,list.get(0),cur};
     }
 }
