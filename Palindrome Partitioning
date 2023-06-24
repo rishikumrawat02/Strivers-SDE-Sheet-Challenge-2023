@@ -1,0 +1,38 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static List<List<String>> partition(String str) {
+        // Write your code here.
+        int n=str.length();
+        boolean isPalindrome[][]=new boolean[n][n];
+        for(int i=0; i<n; i++) isPalindrome[i][i]=true;
+
+        for(int gap=1; gap<n; gap++){
+            for(int i=0; i+gap<n; i++){
+                int j=i+gap;
+                if(str.charAt(i)==str.charAt(j)){
+                    if(gap==1 || isPalindrome[i+1][j-1]==true) isPalindrome[i][j]=true;
+                }                
+            }
+        }
+
+        List<List<String>> res = new ArrayList<>();
+        helper(n,0,str,isPalindrome,new ArrayList<>(),res);
+        return res;
+    }
+
+    static void helper(int n,int idx, String str, boolean isPalindrome[][], List<String> cur,List<List<String>> res){
+        if(idx>=n){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+        for(int j=idx; j<n; j++){
+            if(isPalindrome[idx][j]){
+                cur.add(str.substring(idx,j+1));
+                helper(n,j+1,str,isPalindrome,cur,res);
+                cur.remove(cur.size()-1);
+            }
+        }
+        return;
+    }
+}
