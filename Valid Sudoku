@@ -1,0 +1,38 @@
+public class Solution {
+
+	public static boolean isItSudoku(int matrix[][]) {
+
+		// Write your code here.
+		return helper(0,0,matrix);
+	}
+
+	static boolean isPossible(int i, int j, int matrix[][], int val){
+		for(int k=0; k<=8; k++){
+			if(matrix[i][k]==val || matrix[k][j]==val) return false;
+		}
+		int rowStart=3*(i/3); int colStart=3*(j/3);
+		for(int row=rowStart; row<rowStart+3; row++){
+			for(int col=colStart; col<colStart+3; col++){
+				if(matrix[row][col]==val) return false;
+			}
+		}
+		return true;
+	}
+
+	static boolean helper(int i, int j, int matrix[][]){
+		if(j==9){
+			j=0; i=i+1;
+		}
+		if(i==9) return true;
+		if(matrix[i][j]!=0) return helper(i,j+1,matrix);
+
+		for(int val=1; val<=9; val++){
+			if(isPossible(i,j,matrix,val)){
+				matrix[i][j]=val;
+				if(helper(i,j+1,matrix)) return true;
+				matrix[i][j]=0;
+			}
+		}
+		return false;
+	}
+}
