@@ -1,0 +1,27 @@
+import java.util.ArrayList;
+
+public class Solution {
+    public static String kthPermutation(int n, int k) {
+        // Write your code here.
+        int fact[]=new int[n+1];
+        fact[0]=1; fact[1]=1;
+        for(int i=2; i<=n; i++) fact[i]=fact[i-1]*i;
+        StringBuilder res = new StringBuilder();
+        int used[] = new int[10]; int permut=0;
+        for(int i=0; i<n; i++){
+            for(int j=1; j<=9; j++){
+                if(used[j]==1) continue;
+                int curPermut=fact[n-1-i];
+                if(permut+curPermut<k){
+                    permut=permut+curPermut;
+                    continue;
+                }else{
+                    res.append(j);
+                    used[j]=1;
+                    break;
+                }
+            }
+        }
+        return res.toString();
+    }
+}
