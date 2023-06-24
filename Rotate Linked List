@@ -1,0 +1,55 @@
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+     }
+
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+     }
+
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+     }
+ };
+
+ *****************************************************************/
+
+public class Solution {
+    public static Node rotate(Node head, int k) {
+        // Write your code here.
+        Node cur=head;
+        int size=0;
+        while(cur!=null){
+            cur=cur.next; size++;
+        }
+        k%=size;
+        if(k==0) return head;
+        Node first=head; Node second=head; Node prev=null; Node prev2=null;
+        while(k-->0){
+            prev2=second;
+            second=second.next;
+        }
+        while(second!=null){
+            prev2=second;
+            second=second.next;
+            prev=first;
+            first=first.next;
+        }
+        prev2.next=head;
+        prev.next=null;
+        return first;
+    }
+}
