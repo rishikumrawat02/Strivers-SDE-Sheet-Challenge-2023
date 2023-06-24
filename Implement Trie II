@@ -1,0 +1,76 @@
+import java.util.* ;
+import java.io.*; 
+public class Trie {
+    class Node{
+        int cnt=0; int starting=0;
+        Node arr[] = new Node[26];
+    }
+
+    Node root;
+    public Trie() {
+        // Write your code here.
+        root=new Node();
+    }
+
+    public void insert(String word) {
+        // Write your code here.
+        Node cur=root;
+        for(int i=0; i<word.length(); i++){
+            int idx=word.charAt(i)-'a';
+            if(cur.arr[idx]==null){
+                cur.arr[idx]=new Node();
+            }
+            cur=cur.arr[idx];
+            cur.starting++;
+        }
+        cur.cnt++;
+    }
+
+    public int countWordsEqualTo(String word) {
+        // Write your code here.
+        Node cur=root;
+        for(int i=0; i<word.length(); i++){
+            int idx=word.charAt(i)-'a';
+            if(cur.arr[idx]==null){
+                return 0;
+            }
+            cur=cur.arr[idx];
+            cur.starting++;
+        }
+        return cur.cnt;
+    }
+
+    public int countWordsStartingWith(String word) {
+        // Write your code here.
+        Node cur = root;
+        for(int i=0; i<word.length(); i++){
+            int idx=word.charAt(i)-'a';
+            if(cur.arr[idx]==null) return 0;
+            cur=cur.arr[idx];
+        }
+        return cnt(cur);        
+    }
+    
+    public int cnt(Node cur){
+        int res=cur.cnt;
+        for(int i=0; i<=25; i++){
+            if(cur.arr[i]==null) continue;
+            res+=cnt(cur.arr[i]);
+        }
+        return res;
+    }
+
+    public void erase(String word) {
+        // Write your code here.
+        Node cur = root;
+        for(int i=0; i<word.length(); i++){
+            int idx=word.charAt(i)-'a';
+            if(cur.arr[idx]==null) return;
+            if(cur.arr[idx].starting==1) cur.arr[idx]=null;
+            else cur=cur.arr[idx];
+            cur.starting--;
+        }
+        cur.cnt--;
+    }
+
+}
