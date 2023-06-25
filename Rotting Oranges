@@ -1,0 +1,56 @@
+import java.util.ArrayDeque;
+
+public class Solution {
+	static class Pair{
+		int row; int col;
+		Pair(int row, int col){
+			this.row=row; this.col=col;
+		}
+	}
+
+	public static int minTimeToRot(int[][] grid, int n, int m) {
+		// Write your code here.
+		int dx[]={-1,1,0,0};
+		int dy[]={0,0,-1,1};
+		ArrayDeque<Pair> q = new ArrayDeque<>();
+		for(int i=0; i<n; i++){
+			for(int j=0; j<m; j++){
+				if(grid[i][j]==2){
+					q.add(new Pair(i,j));
+				}
+			}
+		}
+
+		int res=-1;
+
+		while(!q.isEmpty()){
+			int size=q.size();
+			res++;
+			while(size-->0){
+				Pair cur=q.poll(); 	
+				for(int k=0; k<4; k++){
+					int nI=cur.row+dx[k]; int nJ=cur.col+dy[k];
+					if(isPossible(nI,nJ,n,m,grid)){
+						grid[nI][nJ]=2;
+						q.add(new Pair(nI,nJ));
+					}	
+				}
+			}
+		}
+
+		for(int i=0; i<n; i++){
+			for(int j=0; j<m; j++){
+				if(grid[i][j]==1) return -1;
+			}
+		}
+		
+		if(res==-1) return 0;
+		return res;
+	}
+
+	static boolean isPossible(int nI, int nJ, int n, int m, int grid[][]){
+		if(nI>=0 && nJ>=0 && nI<n && nJ<m && grid[nI][nJ]==1) return true;
+		return false;
+	}
+
+}
