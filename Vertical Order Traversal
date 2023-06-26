@@ -1,0 +1,59 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    class TreeNode<T> 
+    {
+       public:
+        T data;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        TreeNode(T data) 
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    };
+
+************************************************************/
+
+import java.util.*;
+
+public class Solution{
+
+    static class Pair implements Comparable<Pair>{
+        int level; int val;
+        Pair(int level, int val){this.level=level; this.val=val;}
+        public int compareTo(Pair p){
+            return this.level-p.level;
+        }
+    }
+    public static ArrayList<Integer> verticalOrderTraversal(TreeNode<Integer> root) 
+    {
+        //    Write your code here.
+        TreeMap<Integer,ArrayList<Pair>> map = new TreeMap<>();
+        helper(root,0,map,0);
+        ArrayList<Integer> res = new ArrayList<>();
+        for(Map.Entry<Integer,ArrayList<Pair>> mp: map.entrySet()){
+            ArrayList<Pair> temp = mp.getValue();
+            Collections.sort(temp);
+            for(int i=0; i<temp.size(); i++){
+                res.add(temp.get(i).val);
+            }
+        }
+        return res;     
+    }
+
+    static void helper(TreeNode<Integer> root, int dist, TreeMap<Integer,ArrayList<Pair>> map,int level){
+        if(root==null) return;
+        map.putIfAbsent(dist,new ArrayList<>());
+        map.get(dist).add(new Pair(level,root.data));
+        if(root.left!=null) helper(root.left,dist-1,map,level+1);
+        if(root.right!=null) helper(root.right,dist+1,map,level+1);
+        return;
+    }
+}
