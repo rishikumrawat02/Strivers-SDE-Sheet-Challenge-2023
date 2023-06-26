@@ -1,0 +1,25 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+    public static String writeAsYouSpeak(int n) 
+    {
+        // Write your code here.
+        StringBuilder str = new StringBuilder();
+        str.append('1');
+        for(int i=0; i<n-1; i++){
+            StringBuilder temp = new StringBuilder();
+            char prev=str.charAt(0); int cnt=1;
+            for(int j=1; j<str.length(); j++){
+                if(str.charAt(j)==prev) cnt++;
+                else{
+                    temp.append(cnt); temp.append(prev); 
+                    prev=str.charAt(j); cnt=1;
+                }
+            }
+            temp.append(cnt); temp.append(prev); 
+            str=temp;
+        }
+        return str.toString();
+    }
+}
