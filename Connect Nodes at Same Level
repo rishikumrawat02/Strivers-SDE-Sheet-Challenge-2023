@@ -1,0 +1,41 @@
+import java.util.* ;
+import java.io.*; 
+/*
+    ----------------- Binary Tree node class for reference -----------------
+
+    class BinaryTreeNode<T> {
+	    public T data;
+	    public BinaryTreeNode<T> left;
+	    public BinaryTreeNode<T> right;
+	    public BinaryTreeNode<T> next;
+
+	    BinaryTreeNode(T data) {
+	        this.data = data;
+	        left = null;
+	        right = null;
+	        next = null;
+	    }
+	};
+
+*/
+
+public class Solution {
+	public static void connectNodes(BinaryTreeNode<Integer> root) {
+    	// Write your code here.
+		if(root==null) return;
+		ArrayDeque<BinaryTreeNode<Integer>> q = new ArrayDeque<>();
+		q.add(root);
+		while(!q.isEmpty()){
+			int size=q.size()-1;
+			BinaryTreeNode<Integer> cur = q.poll();
+			if(cur.left!=null) q.add(cur.left);
+			if(cur.right!=null) q.add(cur.right);
+			while(size-->0){
+				cur.next=q.poll();
+				cur=cur.next;
+				if(cur.left!=null) q.add(cur.left);
+				if(cur.right!=null) q.add(cur.right);
+			}
+		}
+	}
+}
