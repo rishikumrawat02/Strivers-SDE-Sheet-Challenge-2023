@@ -1,0 +1,42 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    class TreeNode<T>
+    {
+       public:
+        T data;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        TreeNode(T data)
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    };
+
+************************************************************/
+
+public class Solution {
+
+    public static int floorInBST(TreeNode<Integer> root, int x) {
+        //    Write your code here.
+        int res[] = {Integer.MIN_VALUE};
+        helper(root,x,res);
+        return res[0];
+    }
+
+    static void helper(TreeNode<Integer> root, int x, int res[]){
+        if(root==null) return;
+        if(root.data<=x){
+            res[0]=Math.max(res[0],root.data);
+            helper(root.right,x,res);
+            return;
+        }
+        helper(root.left,x,res);
+    }
+}
