@@ -1,0 +1,48 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long getTrappedWater(long[] arr, int n) {
+        // Write your code here.
+        Stack<Integer> st = new Stack<>();
+        int next[] = new int[n];
+        next[n-1]=n; st.push(n-1);
+        for(int i=n-2; i>=0; i--){
+            while(!st.isEmpty() && arr[st.peek()]<=arr[i]) st.pop();
+            next[i]=(st.isEmpty())?n:st.peek();
+            st.push(i);
+        }
+
+        int prev[] = new int[n]; int prevEqual[] = new int[n]; Arrays.fill(prevEqual,-1);
+        prev[0]=n; prevEqual[0]=n; st.clear();
+        st.push(0);
+        for(int i=1; i<n; i++){
+            while(!st.isEmpty() && arr[st.peek()]<=arr[i]){
+                if(arr[st.peek()]==arr[i] && prevEqual[i]==-1){
+                    prevEqual[i]=st.peek();
+                }
+                st.pop();
+            }
+            prev[i]=(st.isEmpty())?n:st.peek();
+            if(prevEqual[i]==-1) prevEqual[i]=prev[i];
+            st.push(i);
+        }
+
+
+
+        long res=0l;
+        for(int i=1; i<n-1; i++){
+            if(arr[i]==arr[i-1]) continue;
+            int pre=prev[i]; int nex=next[i];
+            if(pre==n || nex==n) continue;
+            if(arr[prevEqual[i]]==arr[i]) continue;
+            int width=nex-pre-1;
+            long heigt=Math.min(arr[pre],arr[nex])-arr[i];
+            long curRes=(width*heigt);
+            // System.out.println(i+" "+curRes);
+            res+=curRes;
+        }
+
+        return res;       
+        
+    }
+}
