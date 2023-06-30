@@ -1,0 +1,80 @@
+import java.util.*;
+public class Solution {
+	static class Pair implements Comparable<Pair>{
+		int idx; int val;
+		Pair(int idx, int val){
+			this.idx=idx; this.val=val;
+		}
+		public int compareTo(Pair p){
+			return Integer.compare(this.val, p.val);
+		}
+	}
+
+	static void update(int left, int right, int idx, int pos, int val, int tree[]){
+		if(left==right){
+			tree[idx]=val;
+			return;
+		}
+		int mid=left+(right-left)/2;
+		if(pos<=mid) update(left, mid, 2*idx+1, pos, val, tree);
+		else update(mid+1,right,2*idx+2,pos,val,tree);
+		tree[idx]=Math.max(tree[2*idx+1],tree[2*idx+2]);
+	}
+
+	static int getAns(int left, int right, int qS, int qE, int idx, int tree[]){
+		if(qS>qE) return 0;
+		if(left>=qS && right<=qE) return tree[idx];
+		int mid=left+(right-left)/2;
+		int leftres=getAns(left,mid,qS,Math.min(mid,qE),2*idx+1,tree);
+		int rightres=getAns(mid+1,right,Math.max(qS,mid+1),qE,2*idx+2,tree);
+		return Math.max(leftres,rightres);
+	}	
+
+
+	public static int longestIncreasingSubsequence(int arr[]) {
+		//Your code goes here
+		int n=arr.length;
+		int tree[]=new int[4*n];
+		Pair prr[] = new Pair[n];
+		for(int i=0; i<n; i++){
+			prr[i]=new Pair(i,arr[i]);
+		}
+		Arrays.sort(prr);
+		int idx[]=new int[n];
+
+		for(int i=0; i<n; i++){
+			idx[prr[i].idx]=i;
+		}
+
+		int result=0;
+
+		for(int i=0; i<n; i++){
+			int smallIdx = binary(prr,arr[i]);
+			int res = 0;
+			if(smallIdx!=-1){
+				res=getAns(0,n-1,0,idx[prr[smallIdx].idx],0,tree);			
+			}
+			int index = idx[i];
+			result=Math.max(result,res+1);
+			
+			update(0,n-1,0,index,res+1,tree);
+		}
+
+		return result;
+	}
+
+	static int binary(Pair prr[], int val){
+		int low=0; int high=prr.length-1; int res=-1;
+		while(low<=high){
+			int mid=(low+high)/2;
+			if(prr[mid].val<val){
+				res=mid;
+				low=mid+1;
+			}else{
+				high=mid-1;
+			}
+		}
+		return res;
+	}
+
+}
