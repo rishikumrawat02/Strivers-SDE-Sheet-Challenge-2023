@@ -1,0 +1,30 @@
+import java.util.*;
+public class Solution {
+
+    static int dp[][];
+
+    public static int editDistance(String str1, String str2) {
+        //Your code goes here
+        int n=str1.length(); int m=str2.length();
+        dp=new int[n][m];
+        for(int row[]: dp){
+            Arrays.fill(row,-1);
+        }
+        return helper(0,0,n,m,str1,str2);
+    }
+
+    static int helper(int i, int j, int n, int m, String str1,String str2){
+        if(i>=n || j>=m){
+            if(i>=n){
+                return m-j;
+            }
+            return n-i;
+        }
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(str1.charAt(i)==str2.charAt(j)) return dp[i][j]=helper(i+1,j+1,n,m,str1,str2);
+        int del=1+helper(i,j+1,n,m,str1,str2);
+        int ins=1+helper(i+1,j,n,m,str1,str2);
+        int rep=1+helper(i+1,j+1,n,m,str1,str2);
+        return dp[i][j]=Math.min(Math.min(del,ins),rep);
+    }
+}
