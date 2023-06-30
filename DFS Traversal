@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> depthFirstSearch(int v1, int e, ArrayList<ArrayList<Integer>> edges) {
+        // Write your code here.
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0; i<v1; i++) adj.add(new ArrayList<>());
+        for(int i=0; i<e; i++){
+            int u=edges.get(i).get(0); int v=edges.get(i).get(1);
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int vis[] = new int[v1];
+        for(int i=0; i<v1; i++){
+            if(vis[i]==0){
+                helper(i,vis,adj,res);
+            }
+        }
+        return res;
+    }
+
+    static void helper(int src, int vis[], ArrayList<ArrayList<Integer>> adj, ArrayList<ArrayList<Integer>> res){
+        ArrayList<Integer> temp = new ArrayList<>();
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        vis[src]=1; q.add(src); temp.add(src);
+        while(!q.isEmpty()){
+            int cur=q.poll();
+            for(int child: adj.get(cur)){
+                if(vis[child]==0){
+                    vis[child]=1;
+                    q.add(child);
+                    temp.add(child);
+                }
+            }
+        }
+        Collections.sort(temp);
+        res.add(temp);
+        return;
+    }
+}
