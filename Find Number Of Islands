@@ -1,0 +1,40 @@
+import java.util.*;
+
+public class Solution 
+{
+    static int dx[]={-1,-1,-1,1,1,1,0,0};
+    static int dy[]={-1,0,1,-1,0,1,-1,1};
+    public static int getTotalIslands(int[][] mat) 
+	{
+        //Your code goes here
+        int m=mat.length; int n=mat[0].length;
+        boolean visit[][] = new boolean[m][n];
+        int res=0;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(mat[i][j]==1 && !visit[i][j]){
+                    res++;
+                    helper(i,j,m,n,visit,mat);
+                }
+            }
+        }
+        return res;
+    }
+
+    static void helper(int row, int col, int m, int n, boolean visit[][], int mat[][]){
+        visit[row][col]=true;
+        ArrayDeque<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{row,col});
+        while(!q.isEmpty()){
+            int arr[] = q.poll();
+            for(int k=0; k<8; k++){
+                int i=arr[0]+dx[k]; int j=arr[1]+dy[k];
+                if(i>=0 && j>=0 && i<m && j<n && !visit[i][j] && mat[i][j]==1){
+                    visit[i][j]=true;
+                    q.add(new int[]{i,j});
+                }            
+            }
+        }
+        return;        
+    }
+}
