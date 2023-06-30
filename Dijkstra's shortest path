@@ -1,0 +1,35 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	static class Pair{
+		int v; int w;
+		Pair(int v, int w){this.v=v; this.w=w;}
+	}
+	
+	public static ArrayList < Integer > dijkstra(ArrayList< ArrayList < Integer > > edges, int vert, int e, int src){
+		// Write your code here.
+		int dist[] = new int[vert]; Arrays.fill(dist,Integer.MAX_VALUE);
+		ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+		for(int i=0; i<vert; i++) adj.add(new ArrayList<>());
+		for(ArrayList<Integer> edge: edges){
+			int u=edge.get(0); int v=edge.get(1); int w=edge.get(2);
+			adj.get(u).add(new Pair(v,w));
+			adj.get(v).add(new Pair(u,w));
+		}
+		dist[src]=0;
+		ArrayDeque<Integer> q = new ArrayDeque<>();
+		q.add(src);
+		while(!q.isEmpty()){
+			int cur=q.poll();
+			for(Pair child: adj.get(cur)){
+				if(dist[child.v]>dist[cur]+child.w){
+					dist[child.v]=dist[cur]+child.w;
+					q.add(child.v);
+				}
+			}
+		}
+		ArrayList<Integer> res = new ArrayList();
+		for(int val: dist) res.add(val);
+		return res;
+	}
+}
