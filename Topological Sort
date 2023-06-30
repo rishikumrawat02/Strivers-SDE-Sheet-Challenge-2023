@@ -1,0 +1,35 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+    public static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> edges, int v, int e) 
+    {
+        // Write your code here
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+		for(int i=0; i<v; i++) adj.add(new ArrayList<>());
+		for(ArrayList<Integer> edge: edges){
+			int u=edge.get(0); int v1=edge.get(1);
+			adj.get(u).add(v1);
+		}
+        ArrayList<Integer> topo = new ArrayList<>();
+        int visit[] = new int[v];
+        for(int i=0; i<v; i++){
+            if(visit[i]==0){
+                dfs(i,visit,adj,topo);
+            }
+        }
+        Collections.reverse(topo);
+        return topo;
+    }
+
+    static void dfs(int src, int visit[], ArrayList<ArrayList<Integer>> adj, ArrayList<Integer> topo){
+        visit[src]=1;
+        for(int child: adj.get(src)){
+            if(visit[child]==0){
+                dfs(child,visit,adj,topo);
+            }
+        }
+        topo.add(src);
+        return;
+    }
+}
