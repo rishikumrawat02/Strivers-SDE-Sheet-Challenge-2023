@@ -1,0 +1,27 @@
+import java.util.*;
+
+public class Solution {
+  static int floydWarshall(int n, int m, int src, int dest, ArrayList<ArrayList<Integer>> edges) {
+    long matrix[][] = new long[n+1][n+1];
+    for(long row[]: matrix) Arrays.fill(row,Long.MAX_VALUE);
+    for(ArrayList<Integer> edge: edges){
+      int u=edge.get(0); int v=edge.get(1); int w=edge.get(2);
+      matrix[u][v]=w*1l; 
+      // matrix[v][u]=w;
+    }
+
+    for(int k=1; k<=n; k++){
+      for(int i=1; i<=n; i++){
+        for(int j=1; j<=n; j++){
+          if(matrix[i][k]!=Long.MAX_VALUE && matrix[k][j]!=Long.MAX_VALUE) matrix[i][j]=Math.min(matrix[i][j],matrix[i][k]+matrix[k][j]);
+        }
+      }
+    }
+    if(src==dest) return 0;
+
+    if(matrix[src][dest]==Long.MAX_VALUE) return (int)1e9;
+
+    return (int)matrix[src][dest];
+  }
+
+}
