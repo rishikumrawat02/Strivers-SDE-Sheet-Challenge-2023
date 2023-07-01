@@ -1,0 +1,75 @@
+import java.util.*;
+public class LRUCache
+{
+
+    class Node{
+        int key; int val;
+        Node next,prev;
+        Node(int key, int val){
+            this.key=key; this.val=val;
+        }
+    }
+
+    HashMap<Integer,Node> map;
+    Node head,tail;
+    int size,cap;
+    LRUCache(int capacity)
+    {
+        // Write your code here
+        map=new HashMap<>();
+        cap=capacity; size=0;
+        head=new Node(0,0);
+        tail=new Node(0,0);
+        head.next=tail;
+        tail.prev=head;
+    }
+
+    public int get(int key)
+    {
+        // Write your code here
+        if(map.containsKey(key)){
+            Node cur = map.get(key);
+            delNode(cur);
+            addNode(cur);
+            return cur.val;
+        }
+        return -1;
+    }
+
+    public void put(int key, int value)
+    {
+        // Write your code here
+        if(map.containsKey(key)){
+            Node cur = map.get(key);
+            cur.val=value;
+            delNode(cur);
+            addNode(cur);
+            return;
+        }
+
+        if(size==cap){
+            Node del = tail.prev;
+            map.remove(del.key); 
+            delNode(del); size--;
+        }
+
+        Node newNode = new Node(key,value);
+        map.put(key,newNode);
+        addNode(newNode);
+        return;
+    }
+    
+    void addNode(Node cur){
+        cur.next=head.next;
+        cur.next.prev=cur;
+        head.next=cur;
+        cur.prev=head;
+        return;
+    }
+    
+    void delNode(Node cur){
+        cur.prev.next=cur.next;
+        cur.next.prev=cur.prev;
+        return;
+    }
+}
