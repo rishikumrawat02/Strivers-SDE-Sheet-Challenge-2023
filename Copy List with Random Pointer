@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.* ;
+
+/*************************************************************
+
+    Following is the LinkedListNode class structure
+
+    class LinkedListNode<T> {
+	    T data;
+	    LinkedListNode<T> next;
+	    LinkedListNode<T> random;
+
+	    public LinkedListNode(T data) {
+		    this.data = data;
+	    }
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static LinkedListNode<Integer> cloneRandomList(LinkedListNode<Integer> head) {
+		// Write your code here.
+		if(head==null) return null;
+		LinkedListNode<Integer> res = head;
+		HashMap<LinkedListNode<Integer>,LinkedListNode<Integer>> map = new HashMap<>();
+		map.put(head,new LinkedListNode<Integer>(head.data));
+		while(head!=null){
+			LinkedListNode cur = map.get(head);
+			if(head.next!=null && map.containsKey(head.next)){
+				cur.next = map.get(head.next);
+			}else if(head.next!=null){
+				cur.next=new LinkedListNode<Integer>(head.next.data);
+				map.put(head.next,cur.next);
+			}
+			if(head.random!=null && map.containsKey(head.random)){
+				cur.random=map.get(head.random);
+			}else if(head.random!=null){
+				cur.random=new LinkedListNode<Integer>(head.random.data);
+				map.put(head.random,cur.random);
+			}
+			head=head.next;
+		}
+		return map.get(res);
+
+	}
+}
