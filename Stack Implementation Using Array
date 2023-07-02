@@ -1,0 +1,34 @@
+import java.util.* ;
+import java.io.*; 
+
+public class Stack {
+    int n; int arr[]; int idx;
+    Stack(int n){
+        this.n=n;
+        arr=new int[n];
+        idx=0;
+    }
+    void push(int num) {
+        // Write your code here.
+        if(idx==n) return;
+        arr[idx++]=num;
+    }
+    int pop() {
+        // Write your code here.
+        if(idx==0) return -1;
+        return arr[--idx];
+    }
+    int top() {
+        // Write your code here.
+        if(idx==0) return -1;
+        return arr[idx-1];
+    }
+    int isEmpty() {
+        // Write your code here.
+        return idx==0?1:0;
+    }
+    int isFull() {
+        // Write your code here.
+        return idx==n?1:0;
+    }
+}
