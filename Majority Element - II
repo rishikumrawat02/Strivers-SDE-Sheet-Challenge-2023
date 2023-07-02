@@ -1,0 +1,21 @@
+import java.io.*;
+import java.util.* ;
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static ArrayList<Integer> majorityElementII(ArrayList<Integer> arr) 
+    {
+        // Write your code here.
+        int N = arr.size()/3;
+        int freq[] = new int[(int)1e5+1];
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0; i<arr.size(); i++){
+            freq[arr.get(i)]++;
+            if(freq[arr.get(i)]>N) set.add(arr.get(i));
+        }
+        ArrayList<Integer> res = new ArrayList<>(set);
+        return res;
+    }
+}
