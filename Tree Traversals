@@ -1,0 +1,56 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+	Following is the Binary Tree node structure:
+
+	class BinaryTreeNode<T> {
+	    T data;
+	    BinaryTreeNode<T> left;
+	    BinaryTreeNode<T> right;
+
+	    public BinaryTreeNode(T data) {
+	        this.data = data;
+	    }
+	}
+
+************************************************************/
+
+public class Solution {
+    public static List<List<Integer>> getTreeTraversal(BinaryTreeNode<Integer> root) {
+        // Write your code here.
+		List<List<Integer>> res = new LinkedList<>();
+		if(root==null) return res;		
+		List<Integer> inorder = new ArrayList<>();
+		List<Integer> preorder = new ArrayList<>();
+		List<Integer> postorder = new ArrayList<>();
+		dfs1(root,inorder);
+		dfs2(root,preorder);
+		dfs3(root,postorder);
+		res.add(inorder); res.add(preorder); res.add(postorder);
+		return res;
+    }
+
+	static void dfs1(BinaryTreeNode<Integer> root, List<Integer> res){
+		if(root==null) return;
+		dfs1(root.left,res);
+		res.add(root.data);
+		dfs1(root.right,res);
+		return;
+	}
+
+	static void dfs2(BinaryTreeNode<Integer> root, List<Integer> res){
+		if(root==null) return;
+		res.add(root.data);
+		dfs2(root.left,res);
+		dfs2(root.right,res);
+		return;
+	}
+	static void dfs3(BinaryTreeNode<Integer> root, List<Integer> res){
+		if(root==null) return;
+		dfs3(root.left,res);
+		dfs3(root.right,res);
+		res.add(root.data);
+		return;
+	}
+}
