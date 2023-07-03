@@ -1,0 +1,52 @@
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+    Following is the Binary Tree node structure
+
+	class TreeNode<T> {
+	    public T data;
+	    public TreeNode<T> left;
+	    public TreeNode<T> right;
+
+	    TreeNode(T data) {
+	        this.data = data;
+	        left = null;
+	        right = null;
+	    }
+	}
+
+*************************************************************/
+
+import java.util.*;
+
+public class Solution {
+	public static ArrayList<Integer> predecessorSuccessor(TreeNode<Integer> root, int key) {
+        ArrayList<Integer> res = new ArrayList<>();
+        inorder(res, root);
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < res.size(); i++) {
+            if (res.get(i) == key) {
+                if (i - 1 >= 0) {
+                    ans.add(res.get(i - 1));
+                } else {
+                    ans.add(-1);
+                }
+                if (i + 1 < res.size()) {
+                    ans.add(res.get(i + 1));
+                } else {
+                    ans.add(-1);
+                }
+                return ans;
+            }
+        }
+        return ans;
+    }
+
+    static void inorder(ArrayList<Integer> res, TreeNode<Integer> root) {
+        if (root == null) return;
+        inorder(res, root.left);
+        res.add(root.data);
+        inorder(res, root.right);
+    }
+
+}
