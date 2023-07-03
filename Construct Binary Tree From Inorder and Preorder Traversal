@@ -1,0 +1,53 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    class TreeNode<T>
+    {
+       public:
+        T data;
+        TreeNode<T> left;
+        TreeNode<T> right;
+
+        TreeNode(T data)
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    };
+
+************************************************************/
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static TreeNode<Integer> buildBinaryTree(ArrayList<Integer>  inorder, ArrayList<Integer>  preorder) 
+    {
+        //    Write your code here.
+        int max=(int)1e4+1;
+        int n=inorder.size();
+        int index[] = new int[max];
+        for(int i=0; i<n; i++){
+            index[preorder.get(i)]=i;
+        }
+        return helper(inorder,0,n-1,index);
+    }
+
+    static TreeNode<Integer> helper(ArrayList<Integer>  inorder, int left, int right, int index[]){
+        if(right<left) return null;
+        int rootIdx=left;
+        for(int i=left; i<=right; i++){
+            if(index[inorder.get(i)]<index[inorder.get(rootIdx)]){
+                rootIdx=i;
+            }
+        }
+        TreeNode<Integer> root = new TreeNode<Integer>(inorder.get(rootIdx));
+        root.left=helper(inorder,left,rootIdx-1,index);
+        root.right=helper(inorder,rootIdx+1,right,index);
+        return root;
+    }
+}
