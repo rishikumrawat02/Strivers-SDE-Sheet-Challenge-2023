@@ -1,0 +1,35 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    static long power[];
+    static long hash[];
+    static int prime=(int)1e9+13; static int mod=(int)1e9+7;
+
+    static long getHash(int i, int j){
+        return (hash[j+1]-(hash[i]*power[j-i+1])%mod+mod)%mod;
+    }
+    public static boolean findPattern(String p, String s) {
+        // Write your code here.
+        int n=s.length();int m=p.length();
+        power=new long[n+1];
+        hash=new long[n+1];
+        power[0]=1;
+        for(int i=0; i<n; i++){
+            hash[i+1]=hash[i]*prime+(s.charAt(i)-'a')+1;
+            power[i+1]=power[i]*prime;
+            power[i+1]%=mod; hash[i+1]%=mod;
+        }
+
+        long pHash=0;
+        for(int i=0; i<m; i++){
+            pHash=(pHash*prime)%mod+(p.charAt(i)-'a')+1;
+            pHash%=mod;
+        }
+
+        for(int i=0; i<=n-m; i++){
+            long strHash=getHash(i,i+m-1);
+            if(strHash==pHash) return true;
+        }
+        return false;
+    }
+}
