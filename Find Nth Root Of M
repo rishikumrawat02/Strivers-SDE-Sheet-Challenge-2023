@@ -1,0 +1,13 @@
+import java.util.*;
+public class Solution {
+    public static int NthRoot(int n, int m) {
+        // Write your code here.
+        int i=1;
+        while(true){
+            int val = (int)Math.pow(i,n);
+            if(val==m) return i;
+            else if(val>m) return -1;
+            i++;
+        }
+    }
+}
