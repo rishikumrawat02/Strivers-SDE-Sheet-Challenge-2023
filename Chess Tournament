@@ -1,0 +1,32 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+    public static int chessTournament(int[] pos, int n,  int c) 
+	{
+        // Write your code here. 
+        Arrays.sort(pos); int res=0;
+        int low=0; int high=pos[n-1]-pos[0];
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(isPossible(mid,pos,n,c)){
+                res=mid;
+                low=mid+1;
+            }else{
+                high=mid-1;
+            }
+        }
+        return res;           
+    }
+
+    static boolean isPossible(int minLimit, int pos[], int n, int c){
+        int prev=0; c--;
+        for(int i=1; i<n; i++){
+            if(pos[i]-pos[prev]>=minLimit){
+                c--; prev=i;
+            }            
+        }
+        return c<=0;
+    }
+
+}
