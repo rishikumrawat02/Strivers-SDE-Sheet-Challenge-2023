@@ -1,0 +1,37 @@
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+    
+    Following is the Binary Tree node structure:
+
+    class BinaryTreeNode {
+
+	int data;
+	BinaryTreeNode left;
+	BinaryTreeNode right;
+	
+	BinaryTreeNode(int data) {
+		this.data = data;
+		left = null;
+		right = null;
+	   }
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static boolean pairSumBst(BinaryTreeNode root, int k) {
+		// Write your code here.
+		HashSet<Integer>set = new HashSet<>();
+		return helper(root,k,set);
+	}
+
+	static boolean helper(BinaryTreeNode root,int k,HashSet<Integer>set){
+		if(root==null) return false;
+		if(set.contains(k-root.data)) return true;
+		set.add(root.data);
+		if(helper(root.left,k,set)) return true;
+		return helper(root.right,k,set);
+	}
+}
+
