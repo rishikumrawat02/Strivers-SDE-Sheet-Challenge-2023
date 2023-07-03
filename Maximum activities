@@ -1,0 +1,31 @@
+import java.util.*;
+
+public class Solution {
+    static class Pair implements Comparable<Pair>{
+        int start; int end;
+        Pair(int start, int end){
+            this.start=start; this.end=end;
+        }
+
+        public int compareTo(Pair p){
+            return Integer.compare(this.end,p.end);
+        }
+    }
+    public static int maximumActivities(List<Integer> start, List<Integer> end) {
+        //Write your code here
+        int n=start.size();
+        ArrayList<Pair> arr = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            arr.add(new Pair(start.get(i),end.get(i)));
+        }
+        Collections.sort(arr);
+
+        int prev=0; int res=1;
+        for(int i=1; i<n; i++){
+            if(arr.get(i).start>=arr.get(prev).end){
+                prev=i; res++;
+            }
+        }
+        return res;
+    }
+}
