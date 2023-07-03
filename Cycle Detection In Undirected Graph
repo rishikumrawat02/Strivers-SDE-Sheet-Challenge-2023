@@ -1,0 +1,39 @@
+import java.util.*;
+
+public class Solution {    
+    public static String cycleDetection(int[][] edges, int n, int m) {
+        // Write your code here.
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+		for(int i=0; i<n+1; i++) adj.add(new ArrayList<>());
+		for(int[] edge: edges){
+			int u=edge[0]; int v=edge[1];
+			adj.get(u).add(v);
+			adj.get(v).add(u);
+		}
+        boolean visit[] = new boolean[n+1];
+        for(int i=1; i<=n; i++){
+            if(visit[i]==false){
+                if(helper(i,visit,adj,-1)) return "Yes";
+            }
+        }
+        return "No";
+    }
+
+    static boolean helper(int src, boolean visit[], ArrayList<ArrayList<Integer>> adj, int par){
+        visit[src]=true;
+        ArrayDeque<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{src,-1});
+        while(!q.isEmpty()){
+            int cur[] = q.poll();
+            for(int child: adj.get(cur[0])){
+                if(child==cur[1]) continue;
+                if(visit[child]) return true;
+                visit[child]=true;
+                q.add(new int[]{child,cur[0]});
+            }
+        }
+        
+        return false;
+    }
+    
+}
