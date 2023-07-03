@@ -1,0 +1,25 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+
+	public static void sortStack(Stack<Integer> stack) {
+		// Write your code here.
+		TreeMap<Integer,Integer> map = new TreeMap<>();
+		helper(map,stack);
+		return;
+	}
+
+	static void helper(TreeMap<Integer,Integer> map, Stack<Integer> stack){
+		if(stack.isEmpty()) return;
+		int val=stack.pop();
+		map.put(val,map.getOrDefault(val,0)+1);
+		helper(map,stack);
+		val=map.firstKey();
+		stack.push(val);
+		if(map.get(val)==1) map.remove(val);
+		else map.put(val,map.get(val)-1);
+		return;
+	}
+
+}
