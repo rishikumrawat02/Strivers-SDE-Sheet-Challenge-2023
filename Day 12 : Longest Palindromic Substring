@@ -1,0 +1,40 @@
+public class Solution {	
+	public static String longestPalinSubstring(String str) {
+		// Write your code here.
+		int n=str.length();
+		if(n<=1) return str;
+
+		boolean isPalindrome[][] = new boolean[n][n];
+		int start=0; int end=0;
+		for(int i=0; i<n; i++){
+			isPalindrome[i][i]=true;
+			if(i+1<n && str.charAt(i)==str.charAt(i+1)){
+				isPalindrome[i][i+1]=true;
+				if(start==0 && end==0){
+					start=i;end=i+1;
+				}
+			}
+		}
+		
+		for(int gap=2; gap<n; gap++){
+			for(int i=0,j=i+gap; i+gap<n; i++,j++){
+				if(str.charAt(i)==str.charAt(j) && isPalindrome[i+1][j-1]){
+					isPalindrome[i][j]=true;
+				}else isPalindrome[i][j]=false;
+			}
+		}
+		int res=1; 
+		for(int i=0; i<n; i++){
+			for(int j=i+1; j<n; j++){
+				if(isPalindrome[i][j]){
+					if(j-i+1>res){
+						res=j-i+1;
+						start=i; end=j;						
+					}
+				}
+			}
+		}
+
+		return str.substring(start,end+1);
+	}
+}
