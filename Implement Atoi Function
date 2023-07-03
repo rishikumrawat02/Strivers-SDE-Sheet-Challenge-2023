@@ -1,0 +1,21 @@
+#include <bits/stdc++.h> 
+int atoi(string s) {
+    // Write your code here.
+    int n=s.length();
+    if(n==0) return 0;
+    int ans=0; bool isNegative=false;
+    int i=0;
+    if (s[0] == '-') {
+      isNegative = true;
+      i++;
+    }
+    for(; i<n; i++){
+        if(s[i]>='0' && s[i]<='9'){
+            ans=ans*10+(s[i]-'0');
+        }
+    }
+    if(isNegative){
+        return ans*-1;
+    }
+    return ans;
+}
