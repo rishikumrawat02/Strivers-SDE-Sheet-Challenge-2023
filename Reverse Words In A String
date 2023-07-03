@@ -1,0 +1,21 @@
+import java.util.*;
+public class Solution 
+{
+	public static String reverseString(String str) 
+	{
+		//Write your code here
+		String word[] = str.split("\\s+");
+		if(word.length==0) return "";
+		StringBuilder res = new StringBuilder(); 
+		res.append(word[word.length-1]); int idx=word.length-2;
+		str=str.trim(); int n=str.length();
+		for(int i=n-2; i>=0; i--){
+			if(str.charAt(i)==' '){
+				res.append(' ');
+			}else if(str.charAt(i+1)==' '){
+				res.append(word[idx--]);
+			}
+		}
+		return res.toString();
+	}
+}
