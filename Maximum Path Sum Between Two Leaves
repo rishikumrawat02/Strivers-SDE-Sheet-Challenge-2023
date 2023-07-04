@@ -1,0 +1,42 @@
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the Tree node structure
+	
+	class TreeNode {
+		int data;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int data) {
+			this.data = data;
+			this.left = null;
+			this.right = null;
+		}
+
+	}
+
+************************************************************/
+
+public class Solution {
+	public static long findMaxSumPath(TreeNode root) {
+		// Write your code here.
+        if(root==null) return -1;
+        long res[] = {-1};
+        helper(root,res);   
+        return res[0];     
+	}
+
+    static long helper(TreeNode root, long res[]){
+        if(root==null) return Long.MIN_VALUE;
+        if(root.left==null && root.right==null) return 1l*root.data;
+        long leftRes=helper(root.left,res);
+        long rightRes=helper(root.right,res);
+        if(leftRes==Long.MIN_VALUE || rightRes==Long.MIN_VALUE){
+            return Math.max(leftRes,rightRes)+root.data;
+        }
+        res[0]=Math.max(res[0],root.data+leftRes+rightRes);
+        return Math.max(leftRes,rightRes)+root.data;
+    }
+}
