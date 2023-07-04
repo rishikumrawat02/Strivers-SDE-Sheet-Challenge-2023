@@ -1,0 +1,37 @@
+import java.util.*;
+public class Solution {
+  public static boolean detectCycleInDirectedGraph(int n, ArrayList < ArrayList < Integer >> edges) {
+    // Write your code here.
+    int indeg[] = new int[n+1];
+    ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+    for(int i=0; i<=n; i++) adj.add(new ArrayList<>());
+    for(int i=0; i<edges.size(); i++){
+      int u=edges.get(i).get(0); int v=edges.get(i).get(1);
+      adj.get(u).add(v);
+      indeg[v]++;
+    }
+
+    ArrayDeque<Integer> q = new ArrayDeque<>(); 
+    for(int i=1; i<=n; i++){
+      if(indeg[i]==0){
+        q.add(i);
+      }
+    }
+
+    ArrayList<Integer> topo = new ArrayList<>();
+
+    while(!q.isEmpty()){
+      int cur = q.poll();
+      topo.add(cur);
+      for(int child: adj.get(cur)){
+        indeg[child]--;
+        if(indeg[child]==0) q.add(child);
+      }
+    }
+
+    // System.out.println(topo.size());
+
+    return topo.size()!=n;
+  }
+
+}
