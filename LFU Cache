@@ -1,0 +1,116 @@
+import java.util.* ;
+import java.io.*; 
+
+public class LFUCache {
+	class Node{
+		int key; int val;
+		Node next, prev;
+		Node(int key, int val){
+			this.key=key; this.val=val;
+			next=null; prev=null;
+		}
+	}
+
+	TreeMap<Integer,ArrayList<Node>> freqNode;
+	HashMap<Integer,Integer> keyFreq;
+	HashMap<Integer,Node> keyNode;
+	int size; int cap;
+
+	LFUCache(int cap) {
+		// Write your code here.
+		size=0; this.cap=cap;
+		freqNode = new TreeMap<>();
+		keyFreq = new HashMap<>();
+		keyNode = new HashMap<>();
+	}
+
+	int get(int key) {
+		// Write your code here.
+		if(keyNode.containsKey(key)){
+			moveToHead(key);
+			int res=keyNode.get(key).val;
+			return res;
+		}
+		return -1;
+	}
+
+	void moveToHead(int key){
+		int freq=keyFreq.get(key);
+		Node curNode = keyNode.get(key);
+		Node freqHead = freqNode.get(freq).get(0);
+
+		// breaking the connection from middle
+		curNode.prev.next=curNode.next;
+		curNode.next.prev=curNode.prev;
+
+		// adding connection to head;
+		curNode.next=freqHead.next;
+		curNode.next.prev=curNode;
+		curNode.prev=freqHead;
+		freqHead.next=curNode;	
+		return;	
+	}
+
+
+
+	void addNode(int key, int value,int freq){
+		Node newNode = new Node(key,value);
+		if(!freqNode.containsKey(freq)){
+			Node head = new Node(0,0);
+			Node tail = new Node(0,0);
+			head.next=tail;
+			tail.prev=head;
+			ArrayList<Node> list = new ArrayList<>();
+			list.add(head); list.add(tail);
+			freqNode.put(freq,list);
+		}
+
+		keyFreq.put(key,freq);
+		keyNode.put(key,newNode);
+
+		Node freqHead=freqNode.get(freq).get(0);
+		newNode.next=freqHead.next;
+		newNode.next.prev=newNode;
+		newNode.prev=freqHead;
+		freqHead.next=newNode;
+	}
+
+	void put(int key, int value) {
+		// Write your code here.
+		if(keyNode.containsKey(key)){
+			int freq = keyFreq.get(key);
+			Node curNode = keyNode.get(key);
+			curNode.val=value;
+
+			delNodeMiddle(key);
+			addNode(key,value,freq+1);
+			return;
+		}
+
+		addNode(key, value, 1); size++;
+		if(size>cap){
+			int minfreq=freqNode.firstKey();
+			Node tailNode = freqNode.get(minfreq).get(1);
+			Node delNode  = tailNode.prev;
+			keyNode.remove(delNode.key);
+			keyFreq.remove(delNode.key);
+			delNode.prev.next=tailNode;
+			tailNode.prev=delNode.prev;
+			size--;
+		}
+
+	}
+
+	void delNodeMiddle(int key){
+		int freq=keyFreq.get(key);
+		Node curNode = keyNode.get(key);
+
+		// deleting the node from same freq list
+		curNode.next.prev=curNode.prev;
+		curNode.prev.next=curNode.next;
+
+		// deleting the node freq and node map
+		keyFreq.remove(key);
+		keyNode.remove(key);
+	}
+}
