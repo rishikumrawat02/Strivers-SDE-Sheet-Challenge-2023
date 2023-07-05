@@ -4,29 +4,26 @@ public class Solution
 {
     public static ArrayList<ArrayList<Integer>> combinationSum2(ArrayList<Integer> arr, int n, int target)
     {
+        //    Write your code here.
         Collections.sort(arr);
-        HashSet<ArrayList<Integer>> set = new HashSet<>();
-        int mask=(1<<n)-1;
-        for(int i=1; i<=mask; i++){
-            int sum=0;
-            ArrayList<Integer> ans = new ArrayList<>();
-            for(int j=0; j<n; j++){
-                if((i&(1<<j))!=0){
-                    sum+=arr.get(j);
-                    ans.add(arr.get(j));
-                }
-            }
-            if(sum==target) set.add(ans);
-        }
-        ArrayList<ArrayList<Integer>> res = new ArrayList<>(set);
-        Collections.sort(res,new Comparator<ArrayList<Integer>>(){
-            public int compare(ArrayList<Integer> a, ArrayList<Integer> b){
-                for(int i=0; i<Math.min(a.size(),b.size()); i++){
-                    if(a.get(i)!=b.get(i)) return Integer.compare(a.get(i), b.get(i));
-                }
-                return Integer.compare(a.size(), b.size());
-            }
-        });
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        helper(0,0,n,target,res,new ArrayList<>(),arr);
         return res;
+    }
+    
+    static void helper(int idx, int sum ,int n, int target, ArrayList<ArrayList<Integer>> res,
+     ArrayList<Integer> curList, ArrayList<Integer> arr){
+        if(sum==target){
+            res.add(new ArrayList<>(curList));
+            return;
+        }
+        if(idx>=n) return;
+        for(int i=idx; i<n; i++){
+            if(i!=idx && arr.get(i)==arr.get(i-1)) continue;
+            curList.add(arr.get(i));
+            helper(i+1,sum+arr.get(i),n,target,res,curList,arr);
+            curList.remove(curList.size()-1);
+        }
+        return;        
     }
 }
